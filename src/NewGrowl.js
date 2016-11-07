@@ -10,11 +10,9 @@ export default class NewGrowl extends Component {
   }
   _handleSubmit(e){
     e.preventDefault();
-  let newGrowl = {
-    text: this.refs.growl.value
-  }
+  let newGrowl = this.refs.growl.value;
   this.props.firebase.database().ref(`/growlrr/${this.props.user}`).push({
-    growl: newGrowl
+    text: newGrowl
   }).then(() => {
     this.refs.growl.value = ''
     })
