@@ -1,28 +1,63 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 import firebase from './utils/firebase';
 import _ from 'lodash';
-// import Growl from './Growl';
 import NewGrowl from './NewGrowl';
+import Growl from './Growl';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 
 class App extends Component {
+ constructor(props) {
+   super(props);
 
-// componentDidMount() {
-//   firebase.database().ref('growl').on()
-// }
+   this.state = {
+     growls: [],
+     user: {}
+   }
+ }
 
-  render() {
-    return (
-      <div className="App">
-        <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Welcome to React</h2>
-        </div>
-        <NewGrowl firebase={firebase}/>
-      </div>
-    );
-  }
+ componentDidMount() {
+   firebase.database().ref('/growlrr').on('value', snapshot => {
+     let growls = snapshot.val();
+     console.log('growls', growls);
+     this.setState({growls});
+   });
+   firebase.auth().onAuthStateChanged(user => {
+     if(user){
+       this.setState({user})
+     } else {
+       this.setState({ user:{} })
+     }
+   });
+ }
+
+ render() {
+   let sessionButton;
+   let sessionForm;
+
+   if(_.isEmpty(this.state.user)){
+     sessionButton = (<LoginButton firebase={firebase}>Login</LoginButton>);
+   } else {
+     sessionButton = (<LogoutButton firebase={firebase}>Logout</LogoutButton>);
+     sessionForm = <NewGrowl firebase={firebase} />
+   }
+   return (
+     <div className="App">
+       <header className='App-header'>
+         <h1>Welcome to Growlrrrrrr</h1>
+         {sessionButton}
+        {sessionForm}
+       </header>
+       <main>
+         <ul>
+           {_.map(this.state.growls, (growl, id) => <Growl id={id} growl={growl.growl} key={id} firebase={firebase} />) }
+         </ul>
+       </main>
+     </div>
+   );
+ }
 }
 
 export default App;
