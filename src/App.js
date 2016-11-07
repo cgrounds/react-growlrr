@@ -53,13 +53,15 @@ class App extends Component {
        <main>
          <ul>
            {_.map(this.state.growls, (growlList, userId) => {
+             return(
              _.map(growlList, (growl, growlId) => {
                return(
                  <Growl key={growlId} id={growlId} user={userId} text={growl.text} />
                )
              })
+           )
            })
-       }
+         }
          </ul>
        </main>
      </div>
