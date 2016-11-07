@@ -22,7 +22,6 @@ export default class NewGrowl extends Component {
   render() {
   return(
     <div>
-      <h1> Welcome to Growlrrrrrrr </h1>
       <form onSubmit={this._handleSubmit}>
       <input type="text" placeholder="growl here" ref="growl" />
       <input type="submit" />

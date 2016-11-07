@@ -1,11 +1,10 @@
 import React, {Component} from 'react';
 
+
 class Growl extends Component {
   render() {
     return(
-      <li onClick={this.handleCompletedClick}>
-      {this.props.growl.growl}
-      {' '}
+      <li key={this.props.id}> {this.props.growl} </li>
     )
   }
 }
