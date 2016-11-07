@@ -56,7 +56,7 @@ class App extends Component {
              return(
              _.map(growlList, (growl, growlId) => {
                return(
-                 <Growl key={growlId} id={growlId} user={userId} text={growl.text} currentUser={this.state.user.uid} />
+                 <Growl key={growlId} id={growlId} user={userId} text={growl.text} currentUser={this.state.user.uid} firebase={firebase}/>
                )
              })
            )
