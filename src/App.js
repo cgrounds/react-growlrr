@@ -35,18 +35,20 @@ class App extends Component {
 
  render() {
    let sessionButton;
+   let sessionForm;
 
    if(_.isEmpty(this.state.user)){
      sessionButton = (<LoginButton firebase={firebase}>Login</LoginButton>);
    } else {
      sessionButton = (<LogoutButton firebase={firebase}>Logout</LogoutButton>);
+     sessionForm = <NewGrowl firebase={firebase} />
    }
    return (
      <div className="App">
        <header className='App-header'>
          <h1>Welcome to Growlrrrrrr</h1>
          {sessionButton}
-         <NewGrowl firebase={firebase} />
+        {sessionForm}
        </header>
        <main>
          <ul>
