@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-// import firebase from 'firebase';
-
+// import storage from './storage';
+// import ImageUpload from './ImageUpload';
 
 export default class NewGrowl extends Component {
   constructor(props){
@@ -10,10 +10,13 @@ export default class NewGrowl extends Component {
   }
   _handleSubmit(e){
     e.preventDefault();
-  let growl = this.refs.growl.value;
-  console.log('growl', growl)
-  this.props.firebase.database().ref('/growlrr').push({
-    growl: growl
+  let newGrowl = this.refs.growl.value;
+  if (newGrowl.length > 140){
+    alert("this growl is too long!! No!")
+    return
+  }
+  this.props.firebase.database().ref(`/growlrr/${this.props.user}`).push({
+    text: newGrowl
   }).then(() => {
     this.refs.growl.value = ''
     })
@@ -23,7 +26,7 @@ export default class NewGrowl extends Component {
   return(
     <div>
       <form onSubmit={this._handleSubmit}>
-      <input type="text" placeholder="growl here" ref="growl" />
+      <input type="text" placeholder="growl here" ref="growl" maxLength="141"/>
       <input type="submit" />
       </form>
     </div>
