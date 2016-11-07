@@ -3,15 +3,18 @@ import React, { Component } from 'react';
 import './App.css';
 import firebase from './utils/firebase';
 import _ from 'lodash';
-// import NewGrowl from './NewGrowl';
+import NewGrowl from './NewGrowl';
 import Growl from './Growl';
+import LoginButton from './LoginButton';
+import LogoutButton from './LogoutButton';
 
 class App extends Component {
  constructor(props) {
    super(props);
 
    this.state = {
-     growls: []
+     growls: [],
+     user: {}
    }
  }
 
@@ -21,14 +24,29 @@ class App extends Component {
      console.log('growls', growls);
      this.setState({growls});
    });
+   firebase.auth().onAuthStateChanged(user => {
+     if(user){
+       this.setState({user})
+     } else {
+       this.setState({ user:{} })
+     }
+   });
  }
 
  render() {
+   let sessionButton;
+
+   if(_.isEmpty(this.state.user)){
+     sessionButton = (<LoginButton firebase={firebase}>Login</LoginButton>);
+   } else {
+     sessionButton = (<LogoutButton firebase={firebase}>Logout</LogoutButton>);
+   }
    return (
      <div className="App">
        <header className='App-header'>
          <h1>Welcome to Growlrrrrrr</h1>
-
+         {sessionButton}
+         <NewGrowl firebase={firebase} />
        </header>
        <main>
          <ul>
