@@ -1,5 +1,9 @@
+body{
+  background-color: black;
+  color: white;
+}
 .App {
-  text-align: center;
+  text-align: center
 }
 
 .App-logo {
@@ -26,4 +30,5 @@
 ul {
   text-align: center;
   list-style-type: none;
+  display: inline-block;
 }
