@@ -14,15 +14,15 @@ class App extends Component {
 
    this.state = {
      growls: [],
-     user: {}
+     user: ""
    }
  }
 
  componentDidMount() {
    firebase.database().ref('/growlrr').on('value', snapshot => {
      let growls = snapshot.val();
-     console.log('growls', growls);
      this.setState({growls});
+
    });
    firebase.auth().onAuthStateChanged(user => {
      if(user){
@@ -41,18 +41,25 @@ class App extends Component {
      sessionButton = (<LoginButton firebase={firebase}>Login</LoginButton>);
    } else {
      sessionButton = (<LogoutButton firebase={firebase}>Logout</LogoutButton>);
-     sessionForm = <NewGrowl firebase={firebase} />
+     sessionForm = <NewGrowl firebase={firebase} user={this.state.user.uid}/>
    }
    return (
      <div className="App">
        <header className='App-header'>
          <h1>Welcome to Growlrrrrrr</h1>
          {sessionButton}
-        {sessionForm}
+         {sessionForm}
        </header>
        <main>
          <ul>
-           {_.map(this.state.growls, (growl, id) => <Growl id={id} growl={growl.growl} key={id} firebase={firebase} />) }
+           {_.map(this.state.growls, (growlList, userId) => {
+             _.map(growlList, (growl, growlId) => {
+               return(
+                 <Growl key={growlId} id={growlId} user={userId} text={growl.text} />
+               )
+             })
+           })
+       }
          </ul>
        </main>
      </div>
